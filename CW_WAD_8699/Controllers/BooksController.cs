@@ -7,23 +7,25 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CW_WAD_8699.DAL;
 using CW_WAD_8699.Models;
+using Week3DbLogic.Repositories;
 
 namespace CW_WAD_8699.Controllers
 {
     public class BooksController : Controller
     {
-        private readonly LibraryDataContext _context;
+        private readonly IReposotory<Book> _bookRepo;
+        private readonly IReposotory<Category> _categoryRepo;
 
-        public BooksController(LibraryDataContext context)
+        public BooksController(IReposotory<Book> bookRepo, IReposotory<Category> categoryRepo)
         {
-            _context = context;
+            _bookRepo = bookRepo;
+            _categoryRepo = categoryRepo;
         }
 
         // GET: Books
         public async Task<IActionResult> Index()
         {
-            var libraryDataContext = _context.Books.Include(b => b.Category);
-            return View(await libraryDataContext.ToListAsync());
+            return View(await _bookRepo.GetAll());
         }
 
         // GET: Books/Details/5
@@ -34,9 +36,8 @@ namespace CW_WAD_8699.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _bookRepo.GetById(id.Value);
+
             if (book == null)
             {
                 return NotFound();
@@ -46,10 +47,11 @@ namespace CW_WAD_8699.Controllers
         }
 
         // GET: Books/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
-            return View();
+            var bookViewModel = new BooksViewModel();
+            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title");
+            return View(bookViewModel);
         }
 
         // POST: Books/Create
@@ -61,11 +63,11 @@ namespace CW_WAD_8699.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(book);
-                await _context.SaveChangesAsync();
+                await _bookRepo.Create(book);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title", book.CategoryId);
+            var bookViewModel = new BooksViewModel();
+            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
             return View(book);
         }
 
@@ -77,13 +79,14 @@ namespace CW_WAD_8699.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books.FindAsync(id);
+            var book = await _bookRepo.GetById(id.Value);
             if (book == null)
             {
                 return NotFound();
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title", book.CategoryId);
-            return View(book);
+            var bookViewModel = new BooksViewModel();
+            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
+            return View(bookViewModel);
         }
 
         // POST: Books/Edit/5
@@ -102,12 +105,12 @@ namespace CW_WAD_8699.Controllers
             {
                 try
                 {
-                    _context.Update(book);
-                    await _context.SaveChangesAsync();
+                    await _bookRepo.Update(book);
+
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!BookExists(book.Id))
+                    if (!Exists(book.Id))
                     {
                         return NotFound();
                     }
@@ -118,8 +121,9 @@ namespace CW_WAD_8699.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title", book.CategoryId);
-            return View(book);
+            var bookViewModel = new BooksViewModel();
+            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
+            return View(bookViewModel);
         }
 
         // GET: Books/Delete/5
@@ -130,9 +134,8 @@ namespace CW_WAD_8699.Controllers
                 return NotFound();
             }
 
-            var book = await _context.Books
-                .Include(b => b.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var book = await _bookRepo.GetById(id.Value);
+
             if (book == null)
             {
                 return NotFound();
@@ -146,15 +149,13 @@ namespace CW_WAD_8699.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var book = await _context.Books.FindAsync(id);
-            _context.Books.Remove(book);
-            await _context.SaveChangesAsync();
+            await _bookRepo.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool BookExists(int id)
+        private bool Exists(int id)
         {
-            return _context.Books.Any(e => e.Id == id);
+            return _bookRepo.Exists(id);
         }
     }
 }

@@ -7,22 +7,23 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using CW_WAD_8699.DAL;
 using CW_WAD_8699.Models;
+using Week3DbLogic.Repositories;
 
 namespace CW_WAD_8699.Controllers
 {
     public class CategoriesController : Controller
     {
-        private readonly LibraryDataContext _context;
+        private readonly IReposotory<Category> _categoryRepo;
 
-        public CategoriesController(LibraryDataContext context)
+        public CategoriesController(IReposotory<Category> categoryRepo)
         {
-            _context = context;
+            _categoryRepo = categoryRepo;
         }
 
         // GET: Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            return View(await _categoryRepo.GetAll());
         }
 
         // GET: Categories/Details/5
@@ -33,8 +34,7 @@ namespace CW_WAD_8699.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _categoryRepo.GetById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -58,8 +58,7 @@ namespace CW_WAD_8699.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(category);
-                await _context.SaveChangesAsync();
+                await _categoryRepo.Create(category);
                 return RedirectToAction(nameof(Index));
             }
             return View(category);
@@ -73,7 +72,7 @@ namespace CW_WAD_8699.Controllers
                 return NotFound();
             }
 
-            var category = await _context.Categories.FindAsync(id);
+            var category = await _categoryRepo.GetById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -97,12 +96,11 @@ namespace CW_WAD_8699.Controllers
             {
                 try
                 {
-                    _context.Update(category);
-                    await _context.SaveChangesAsync();
+                    await _categoryRepo.Update(category);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CategoryExists(category.Id))
+                    if (!Exists(category.Id))
                     {
                         return NotFound();
                     }
@@ -123,9 +121,7 @@ namespace CW_WAD_8699.Controllers
             {
                 return NotFound();
             }
-
-            var category = await _context.Categories
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _categoryRepo.GetById(id.Value);
             if (category == null)
             {
                 return NotFound();
@@ -139,15 +135,13 @@ namespace CW_WAD_8699.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var category = await _context.Categories.FindAsync(id);
-            _context.Categories.Remove(category);
-            await _context.SaveChangesAsync();
+            await _categoryRepo.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CategoryExists(int id)
+        private bool Exists(int id)
         {
-            return _context.Categories.Any(e => e.Id == id);
+            return _categoryRepo.Exists(id);
         }
     }
 }
