@@ -1,4 +1,5 @@
 using CW_WAD_8699.DAL;
+using CW_WAD_8699.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Week3DbLogic.Repositories;
 
 namespace CW_WAD_8699
 {
@@ -25,6 +27,8 @@ namespace CW_WAD_8699
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IReposotory<Category>, CategoriesRepo>();
+            services.AddScoped<IReposotory<Book>, BooksRepo>();
             services.AddControllersWithViews();
             services.AddDbContext<LibraryDataContext>(
                     options => options.UseSqlServer(
