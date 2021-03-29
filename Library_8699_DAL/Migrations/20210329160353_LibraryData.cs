@@ -2,7 +2,7 @@
 
 namespace Library_8699_DAL.Migrations
 {
-    public partial class CWDB869 : Migration
+    public partial class LibraryData : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

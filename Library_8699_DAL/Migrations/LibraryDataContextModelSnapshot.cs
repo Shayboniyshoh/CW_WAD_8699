@@ -18,7 +18,7 @@ namespace Library_8699_DAL.Migrations
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CW_WAD_8699.Models.Book", b =>
+            modelBuilder.Entity("Library_8699_DAL.DBO.Book", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -45,7 +45,7 @@ namespace Library_8699_DAL.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("CW_WAD_8699.Models.Category", b =>
+            modelBuilder.Entity("Library_8699_DAL.DBO.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -64,9 +64,9 @@ namespace Library_8699_DAL.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("CW_WAD_8699.Models.Book", b =>
+            modelBuilder.Entity("Library_8699_DAL.DBO.Book", b =>
                 {
-                    b.HasOne("CW_WAD_8699.Models.Category", "Category")
+                    b.HasOne("Library_8699_DAL.DBO.Category", "Category")
                         .WithMany("Books")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -75,7 +75,7 @@ namespace Library_8699_DAL.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("CW_WAD_8699.Models.Category", b =>
+            modelBuilder.Entity("Library_8699_DAL.DBO.Category", b =>
                 {
                     b.Navigation("Books");
                 });
