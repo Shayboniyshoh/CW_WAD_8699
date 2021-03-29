@@ -8,7 +8,7 @@ using Library_8699_DAL.DBO;
 
 namespace Library_8699_DAL.Repositories
 {
-    public class BooksRepo : BaseRepo, IReposotory<Book>
+    public class BooksRepo : BaseRepo, IRepository<Book>
     {
 
         public BooksRepo(LibraryDataContext context) : base(context)

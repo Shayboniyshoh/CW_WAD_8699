@@ -9,7 +9,7 @@ using Library_8699_DAL.DBO;
 
 namespace Library_8699_DAL.Repositories
 {
-    public class CategoriesRepo : BaseRepo, IReposotory<Category>
+    public class CategoriesRepo : BaseRepo, IRepository<Category>
     {
         public CategoriesRepo(LibraryDataContext context) : base(context)
         {

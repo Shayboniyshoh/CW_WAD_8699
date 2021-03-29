@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Library_8699_DAL.Repositories
 {
-    public interface IReposotory<T> where T:class
+    public interface IRepository<T> where T:class
     {
         Task Create(T entity);
         Task Update(T entity);
