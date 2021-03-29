@@ -1,159 +1,106 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Library_8699_DAL.Repositories;
 using Library_8699_DAL.DBO;
-using Library_8699.Models;
+using Library_8699_DAL.Repositories;
 
 namespace Library_8699.Controllers
 {
-    public class BooksController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class BooksController : ControllerBase
     {
-        private readonly IReposotory<Book> _bookRepo;
-        private readonly IReposotory<Category> _categoryRepo;
+        private readonly IRepository<Book> _book;
 
-        public BooksController(IReposotory<Book> bookRepo, IReposotory<Category> categoryRepo)
+        public BooksController(IRepository<Book> book)
         {
-            _bookRepo = bookRepo;
-            _categoryRepo = categoryRepo;
+            _book = book;
         }
 
-        // GET: Books
-        public async Task<IActionResult> Index()
+        // GET: api/Books
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
         {
-            return View(await _bookRepo.GetAll());
+            return await _book.GetAll();
         }
 
-        // GET: Books/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Books/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Book>> GetBook(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var book = await _bookRepo.GetById(id.Value);
+            var book = await _book.GetById(id);
 
             if (book == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            return book;
         }
 
-        // GET: Books/Create
-        public async Task<IActionResult> Create()
+        // PUT: api/Books/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutBook(int id, Book book)
         {
-            var bookViewModel = new BooksViewModel();
-            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title");
-            return View(bookViewModel);
-        }
-
-        // POST: Books/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,IssueYear,IsAvailable,CategoryId")] Book book)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _bookRepo.Create(book);
-                return RedirectToAction(nameof(Index));
-            }
-            var bookViewModel = new BooksViewModel();
-            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
-            return View(book);
-        }
-
-        // GET: Books/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var book = await _bookRepo.GetById(id.Value);
-            if (book == null)
-            {
-                return NotFound();
-            }
-            var bookViewModel = new BooksViewModel();
-            bookViewModel.CopyFromBook(book);
-            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
-            return View(bookViewModel);
-        }
 
-        // POST: Books/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IssueYear,IsAvailable,CategoryId")] Book book)
-        {
-            if (id != book.Id)
+            try
             {
-                return NotFound();
+                await _book.Update(book);
             }
-
-            if (ModelState.IsValid)
+            catch (DbUpdateConcurrencyException)
             {
-                try
+                if (!BookExists(id))
                 {
-                    await _bookRepo.Update(book);
-
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!Exists(book.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            var bookViewModel = new BooksViewModel();
-            bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
-            return View(bookViewModel);
+
+            return NoContent();
         }
 
-        // GET: Books/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Books
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Book>> PostBook(Book book)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
+            await _book.Create(book);
 
-            var book = await _bookRepo.GetById(id.Value);
+            return CreatedAtAction("GetBook", new { id = book.Id }, book);
+        }
 
+        // DELETE: api/Books/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            var book = await _book.GetById(id);
             if (book == null)
             {
                 return NotFound();
             }
 
-            return View(book);
+            await _book.Delete(id);
+
+            return NoContent();
         }
 
-        // POST: Books/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        private bool BookExists(int id)
         {
-            await _bookRepo.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool Exists(int id)
-        {
-            return _bookRepo.Exists(id);
+            return _book.Exists(id);
         }
     }
 }

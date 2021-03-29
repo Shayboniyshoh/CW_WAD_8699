@@ -1,142 +1,105 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Library_8699_DAL.DBO;
 using Library_8699_DAL.Repositories;
 
-namespace Library_8699_DAL.Controllers
+namespace Library_8699.Controllers
 {
-    public class CategoriesController : Controller
+    [Route("api/[controller]")]
+    [ApiController]
+    public class CategoriesController : ControllerBase
     {
-        private readonly IReposotory<Category> _categoryRepo;
+        private readonly IRepository<Category> _category;
 
-        public CategoriesController(IReposotory<Category> categoryRepo)
+        public CategoriesController(IRepository<Category> category)
         {
-            _categoryRepo = categoryRepo;
+            _category = category;
         }
 
-        // GET: Categories
-        public async Task<IActionResult> Index()
+        // GET: api/Categories
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
-            return View(await _categoryRepo.GetAll());
+            return await _category.GetAll();
         }
 
-        // GET: Categories/Details/5
-        public async Task<IActionResult> Details(int? id)
+        // GET: api/Categories/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Category>> GetCategory(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
+            var category = await _category.GetById(id);
 
-            var category = await _categoryRepo.GetById(id.Value);
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            return category;
         }
 
-        // GET: Categories/Create
-        public IActionResult Create()
+        // PUT: api/Categories/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutCategory(int id, Category category)
         {
-            return View();
-        }
-
-        // POST: Categories/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Title,IssueYear")] Category category)
-        {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                await _categoryRepo.Create(category);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(category);
-        }
-
-        // GET: Categories/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
+                return BadRequest(ModelState);
             }
 
-            var category = await _categoryRepo.GetById(id.Value);
-            if (category == null)
+            try
             {
-                return NotFound();
+                await _category.Update(category);
             }
-            return View(category);
-        }
-
-        // POST: Categories/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Title,IssueYear")] Category category)
-        {
-            if (id != category.Id)
+            catch (DbUpdateConcurrencyException)
             {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
+                if (!CategoryExists(id))
                 {
-                    await _categoryRepo.Update(category);
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+                else
                 {
-                    if (!Exists(category.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(category);
+
+            return NoContent();
         }
 
-        // GET: Categories/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // POST: api/Categories
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        public async Task<ActionResult<Category>> PostCategory(Category category)
         {
-            if (id == null)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return BadRequest(ModelState);
             }
-            var category = await _categoryRepo.GetById(id.Value);
+            await _category.Create(category);
+
+            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
+        }
+
+        // DELETE: api/Categories/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            var category = await _category.GetById(id);
             if (category == null)
             {
                 return NotFound();
             }
 
-            return View(category);
+            await _category.Delete(id);
+
+            return NoContent();
         }
 
-        // POST: Categories/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        private bool CategoryExists(int id)
         {
-            await _categoryRepo.Delete(id);
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool Exists(int id)
-        {
-            return _categoryRepo.Exists(id);
+            return _category.Exists(id);
         }
     }
 }
