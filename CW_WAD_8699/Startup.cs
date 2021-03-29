@@ -1,19 +1,14 @@
-using CW_WAD_8699.DAL;
-using CW_WAD_8699.Models;
+using Library_8699_DAL.DAL;
+using Library_8699_DAL.DBO;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Week3DbLogic.Repositories;
+using Library_8699_DAL.Repositories;
 
-namespace CW_WAD_8699
+namespace Library_8699_DAL
 {
     public class Startup
     {

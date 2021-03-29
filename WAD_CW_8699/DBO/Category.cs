@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CW_WAD_8699.Models
+namespace Library_8699_DAL.DBO
 {
     public class Category
     {

@@ -1,7 +1,7 @@
-﻿using CW_WAD_8699.Models;
+﻿using Library_8699_DAL.DBO;
 using Microsoft.EntityFrameworkCore;
 
-namespace CW_WAD_8699.DAL
+namespace Library_8699_DAL.DAL
 {
     public class LibraryDataContext : DbContext
     {
@@ -10,6 +10,6 @@ namespace CW_WAD_8699.DAL
 
         }
         public virtual DbSet<Book> Books { get; set; }
-        public DbSet<CW_WAD_8699.Models.Category> Categories { get; set; }
+        public DbSet<Library_8699_DAL.DBO.Category> Categories { get; set; }
     }
 }

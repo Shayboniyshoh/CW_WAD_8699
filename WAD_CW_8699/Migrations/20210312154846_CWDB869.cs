@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace CW_WAD_8699.Migrations
+namespace Library_8699_DAL.Migrations
 {
     public partial class CWDB869 : Migration
     {

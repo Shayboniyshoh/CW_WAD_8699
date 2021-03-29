@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Week3DbLogic.Repositories
+namespace Library_8699_DAL.Repositories
 {
     public interface IReposotory<T> where T:class
     {

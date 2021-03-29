@@ -1,9 +1,9 @@
-﻿using CW_WAD_8699.DAL;
+﻿using Library_8699_DAL.DAL;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Week3DbLogic.Repositories
+namespace Library_8699_DAL.Repositories
 {
     public abstract class BaseRepo
     {

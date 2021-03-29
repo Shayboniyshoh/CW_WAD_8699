@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
-using CW_WAD_8699.DAL;
-using CW_WAD_8699.Models;
+using Library_8699_DAL.DAL;
+using Library_8699_DAL.DBO;
 
-namespace Week3DbLogic.Repositories
+namespace Library_8699_DAL.Repositories
 {
     public class BooksRepo : BaseRepo, IReposotory<Book>
     {

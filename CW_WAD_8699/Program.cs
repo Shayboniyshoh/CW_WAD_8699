@@ -1,13 +1,8 @@
+using Library_8699_DAL;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace CW_WAD_8699
+namespace Library_8699
 {
     public class Program
     {

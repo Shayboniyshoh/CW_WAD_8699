@@ -1,6 +1,6 @@
 using System;
 
-namespace CW_WAD_8699.Models
+namespace Library_8699.Models
 {
     public class ErrorViewModel
     {

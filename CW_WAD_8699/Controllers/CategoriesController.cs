@@ -1,15 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using CW_WAD_8699.DAL;
-using CW_WAD_8699.Models;
-using Week3DbLogic.Repositories;
+using Library_8699_DAL.DBO;
+using Library_8699_DAL.Repositories;
 
-namespace CW_WAD_8699.Controllers
+namespace Library_8699_DAL.Controllers
 {
     public class CategoriesController : Controller
     {

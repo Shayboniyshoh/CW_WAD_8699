@@ -1,10 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Library_8699_DAL.DBO;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace CW_WAD_8699.Models
+namespace Library_8699.Models
 {
     public class BooksViewModel : Book
     {
