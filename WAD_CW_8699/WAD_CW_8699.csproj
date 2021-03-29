@@ -2,6 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
+    <AssemblyName>Library_8699_DAL</AssemblyName>
+    <RootNamespace>Library_8699_DAL</RootNamespace>
+    <Copyright>Copyright CW_WAD_8699</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
