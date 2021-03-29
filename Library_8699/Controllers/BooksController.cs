@@ -82,6 +82,7 @@ namespace Library_8699.Controllers
                 return NotFound();
             }
             var bookViewModel = new BooksViewModel();
+            bookViewModel.CopyFromBook(book);
             bookViewModel.Categories = new SelectList(await _categoryRepo.GetAll(), "Id", "Title", book.CategoryId);
             return View(bookViewModel);
         }
