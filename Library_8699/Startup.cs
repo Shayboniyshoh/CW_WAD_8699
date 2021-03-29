@@ -22,8 +22,8 @@ namespace Library_8699_DAL
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped<IReposotory<Category>, CategoriesRepo>();
-            services.AddScoped<IReposotory<Book>, BooksRepo>();
+            services.AddScoped<IRepository<Category>, CategoriesRepo>();
+            services.AddScoped<IRepository<Book>, BooksRepo>();
             services.AddControllersWithViews();
             services.AddDbContext<LibraryDataContext>(
                     options => options.UseSqlServer(
