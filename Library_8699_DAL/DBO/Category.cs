@@ -13,6 +13,7 @@ namespace Library_8699_DAL.DBO
         public string Title { get; set; }
         [Range(1900, int.MaxValue)]
         public int IssueYear { get; set; }
+
         public virtual ICollection<Book> Books { get; set; }
     }
 }

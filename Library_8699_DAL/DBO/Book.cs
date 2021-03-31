@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace Library_8699_DAL.DBO
 {
@@ -14,6 +15,7 @@ namespace Library_8699_DAL.DBO
         public int IssueYear { get; set; }
         public bool IsAvailable { get; set; }
         public int CategoryId { get; set; }
+        [JsonIgnore]
         public virtual Category Category { get; set; }
     }
 }
