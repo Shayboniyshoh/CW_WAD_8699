@@ -2,6 +2,171 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome to Our Library</h1>
+<div ng-app="Library_8699">
+    <div ng-view></div>
 </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+<script type="text/javascript">
+    angular
+        .module('Library_8699', ['ngRoute'])
+        .config(function ($routeProvider) {
+            $routeProvider
+                .when('/',
+                {
+                    templateUrl: 'pages/index.html',
+                    controller: 'IndexController'
+                })
+                .when('/books',
+                {
+                    templateUrl: 'pages/Book/books.html',
+                    controller: 'BooksController'
+                }).when('/addBooks',
+                {
+                    templateUrl: 'pages/Book/addEditBooks.html',
+                    controller: 'AddBookController'
+                })
+                .when('/editBook/:BookId',
+                    {
+                        templateUrl: 'pages/Book/addEditBook.html',
+                        controller: 'EditBookController'
+                })
+                .when('/categories',
+                {
+                    templateUrl: 'pages/Category/categories.html',
+                    controller: 'CategoriesController'
+                })
+                .when('/addCategories',
+                {
+                    templateUrl: 'pages/Category/addEditCategories.html',
+                    controller: 'AddCategoryController'
+                })
+                .when('/editCategory/:CategoryId',
+                    {
+                        templateUrl: 'pages/Category/addEditCategories.html',
+                        controller: 'EditCategoryController'
+                })
+                .otherwise({
+                    redirectTo: '/'
+                });
+        })
+        .controller('IndexController', ['$scope', '$http', function ($scope, $http) {
+            $scope.message = 'Welcome Text';
+        }])
+        .controller('BooksController', ['$scope', '$http', function ($scope, $http) {
+            $scope.books = [];
+            $scope.categories = [];
+
+            $scope.selectedCategories = null;
+
+            $http.get('@Url.Action("GetCategories", "Categories")')
+                .then(function (response) {
+                    $scope.cate = response.data;
+                });
+
+            $scope.GetBooks = function () {
+                var url = '@Url.Action("GetBooks", "Books")';
+                if ($scope.selectedCategories) {
+                    url += '?categoryId=' + $scope.selectedCategories.id;
+                }
+                $http.get(url)
+                    .then(function (response) {
+                        $scope.books = response.data;
+                    });
+            };
+
+            $scope.GetBooks(null);
+
+        }])
+        .controller('AddBookController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+            $scope.books =
+            {
+                id: 0,
+                title: '',
+                issueYear: '',
+                isAvailable: false
+            };
+
+            $scope.SaveCategory = function()
+            {
+                $http.post('@Url.Action("PostCategory", "Categories")', $scope.category)
+                    .then(function (response) {
+                        $location.path('/categories');
+                    })
+            }
+        }])
+        .controller('EditCategoryController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.category =
+            {
+                id: $routeParams.CategoryId,
+                title: '',
+                issueYear: ''
+            };
+
+            $http.get('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId)
+                .then(function (response) {
+                    $scope.category = response.data;
+                });
+
+            $scope.SaveBook = function ()
+            {
+                $http.put('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId, $scope.category)
+                    .then(function (response) {
+                        $location.path('/categories');
+                    })
+            }
+        }])//below categories controller logic
+        .controller('CategoriesController', ['$scope', '$http', function ($scope, $http) {
+            $scope.categories = [];
+            $http.get('@Url.Action("GetCategories", "Categories")')
+                .then(function (response) {
+                    $scope.categories = response.data;
+                });
+
+            $scope.Delete = function (category) {
+                $http.delete("@Url.Action("GetCategories", "Categories")/" + category.id).then(function (response) {
+                    var index = $scope.categories.indexOf(category);
+                    $scope.categories.splice(index, 1);
+                    });
+                }
+        }])
+        .controller('AddCategoryController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+            $scope.categories =
+            {
+                id: 0,
+                title: '',
+                issueYear: ''
+            };
+
+            $scope.SaveCategory = function()
+            {
+                $http.post('@Url.Action("PostCategory", "Categories")', $scope.category)
+                    .then(function (response) {
+                        $location.path('/categories');
+                    })
+            }
+        }])
+        .controller('EditCategoryController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.category =
+            {
+                id: $routeParams.CategoryId,
+                title: '',
+                issueYear: ''
+            };
+
+            $http.get('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId)
+                .then(function (response) {
+                    $scope.category = response.data;
+                });
+
+            $scope.SaveCategory = function ()
+            {
+                $http.put('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId, $scope.category)
+                    .then(function (response) {
+                        $location.path('/categories');
+                    })
+            }
+        }]);
+
+</script>
