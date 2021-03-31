@@ -1,0 +1,19 @@
+﻿<a href="#!/addCategories">Add new Category</a>
+<table class="table">
+    <tbody>
+        <tr ng-repeat="category in categories">
+            <td>
+                {{category.title}}
+            </td>
+            <td>
+                {{category.issueYear}}
+            </td>
+            <td>
+                <a href="#!/editCategory/{{category.id}}">Edit</a>
+            </td>
+            <td>
+                <a ng-click="Delete(category)">Delete</a>
+            </td>
+        </tr>
+    </tbody>
+</table>
