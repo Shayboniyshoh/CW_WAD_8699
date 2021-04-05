@@ -29,7 +29,7 @@
                 })
                 .when('/editBook/:BookId',
                     {
-                        templateUrl: 'pages/Book/addEditBook.html',
+                        templateUrl: 'pages/Book/addEditBooks.html',
                         controller: 'EditBookController'
                 })
                 .when('/categories',
@@ -52,7 +52,7 @@
                 });
         })
         .controller('IndexController', ['$scope', '$http', function ($scope, $http) {
-            $scope.message = 'Welcome Text';
+            $scope.message = 'Online Library';
         }])
         .controller('BooksController', ['$scope', '$http', function ($scope, $http) {
             $scope.books = [];
@@ -84,36 +84,37 @@
             {
                 id: 0,
                 title: '',
-                issueYear: '',
-                isAvailable: false
-            };
-
-            $scope.SaveCategory = function()
-            {
-                $http.post('@Url.Action("PostCategory", "Categories")', $scope.category)
-                    .then(function (response) {
-                        $location.path('/categories');
-                    })
-            }
-        }])
-        .controller('EditCategoryController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
-            $scope.category =
-            {
-                id: $routeParams.CategoryId,
-                title: '',
                 issueYear: ''
             };
 
-            $http.get('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId)
+            $scope.SaveBook = function ()
+            {
+                $http.post('@Url.Action("PostBook", "Books")', $scope.books)
+                    .then(function (response) {
+                        $location.path('/books');
+                    })
+            }
+        }])
+        .controller('EditBookController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
+            $scope.book =
+            {
+                id: $routeParams.BookId,
+                title: '',
+                issueYear: '',
+                IsAvailable: $routeParams.IsAvailable,
+                CategoryId: $routeParams.categories
+            };
+
+            $http.get('@Url.Action("GetBooks", "Books")/' + $routeParams.BookId)
                 .then(function (response) {
-                    $scope.category = response.data;
+                    $scope.book = response.data;
                 });
 
             $scope.SaveBook = function ()
             {
-                $http.put('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId, $scope.category)
+                $http.put('@Url.Action("GetBooks", "Books")/' + $routeParams.BookId, $scope.book)
                     .then(function (response) {
-                        $location.path('/categories');
+                        $location.path('/books');
                     })
             }
         }])//below categories controller logic
