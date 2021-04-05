@@ -3,24 +3,35 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="Name" class="control-label">Book Title</label>
-            <input ng-model="book.title" placeholder="Title" type="text" />
+            <input class="form-control" ng-model="book.title" placeholder="Title" type="text" />
         </div>
         <div class="form-group">
             <label for="Name" class="control-label">Issue Year</label>
-            <input ng-model="book.issueYear" placeholder="Year" type="text" />
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">YYYY</span>
+                </div>
+                <input class="form-control" ng-model="book.issueYear" placeholder="Year" type="text" aria-label="Default" aria-describedby="inputGroup-sizing-default" />
+            </div>
         </div>
-        <div class="form-group">
+        <div class="form-group mb-3">
             <label for="Name" class="control-label">IsAvailable</label>
-            <input ng-model="book.isAvailable" type="checkbox" />
+                <div class="input-group-prepend">
+                    <div class="input-group-text">
+                        <input type="checkbox" ng-model="book.isAvailable" />
+                    </div>
+                </div>
         </div>
-        <div class="form-group">
-            <label for="Name" class="control-label">Categories</label>
-            <select [(ng-model)]="selectedValue">
-                <option *ng-for="let book of books" [ng-value]="book">{{book.categoryId}}</option>
+        <div class="input-group mb-3">
+            <div class="input-group-prepend">
+                <label class="input-group-text">Categories</label>
+            </div>
+            <select class="custom-select" ng-model="book.categoryId">
+                <option ng-repeat="option in book.availableOptions" value="{{option.id}}">{{option.title}}</option>
             </select>
         </div>
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-default" ng-click="SaveBook()" />
+            <input type="submit" value="Save" class="btn btn-primary" ng-click="SaveBook()" />
         </div>
     </div>
 </div>

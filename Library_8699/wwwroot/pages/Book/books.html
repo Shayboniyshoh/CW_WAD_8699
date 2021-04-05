@@ -1,5 +1,24 @@
-﻿<a href="#!/addBooks">Add new Book</a>
-<table class="table">
+﻿<a class="btn btn-success my-2" href="#!/addBooks">Create</a>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Issue Year
+            </th>
+            <th>
+                Is Available
+            </th>
+            <th>
+                Categories
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
     <tbody>
         <tr ng-repeat="book in books">
             <td>
@@ -15,10 +34,8 @@
                 {{book.categoryId}}
             </td>
             <td>
-                <a href="#!/editBook/{{book.id}}">Edit</a>
-            </td>
-            <td>
-                <a ng-click="Delete(book)">Delete</a>
+                <a class="btn btn-secondary" href="#!/editBook/{{book.id}}">Edit</a>
+                <a class="btn btn-danger text-light" ng-click="Delete(book)">Delete</a>
             </td>
         </tr>
     </tbody>
