@@ -1,5 +1,18 @@
-﻿<a href="#!/addCategories">Add new Category</a>
-<table class="table">
+﻿<a class="btn btn-success my-2" href="#!/addCategories">Create</a>
+<table class="table table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>
+                Title
+            </th>
+            <th>
+                Issue Year
+            </th>
+            <th>
+               Actions 
+            </th>
+        </tr>
+    </thead>
     <tbody>
         <tr ng-repeat="category in categories">
             <td>
@@ -9,10 +22,8 @@
                 {{category.issueYear}}
             </td>
             <td>
-                <a href="#!/editCategory/{{category.id}}">Edit</a>
-            </td>
-            <td>
-                <a ng-click="Delete(category)">Delete</a>
+                <a class="btn btn-secondary" href="#!/editCategory/{{category.id}}">Edit</a>
+                <a class="btn btn-danger text-light" ng-click="Delete(category)">Delete</a>
             </td>
         </tr>
     </tbody>

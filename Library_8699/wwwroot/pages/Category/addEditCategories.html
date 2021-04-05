@@ -3,14 +3,19 @@
     <div class="col-md-4">
         <div class="form-group">
             <label for="Name" class="control-label">Category Title</label>
-            <input ng-model="category.title" placeholder="Title" type="text" />
+            <input class="form-control" ng-model="category.title" placeholder="Title" type="text" />
         </div>
         <div class="form-group">
             <label for="Name" class="control-label">Issue Year</label>
-            <input ng-model="category.issueYear" placeholder="Year" type="text" />
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                    <span class="input-group-text" id="inputGroup-sizing-default">YYYY</span>
+                </div>
+                <input class="form-control" ng-model="category.issueYear" placeholder="Year" type="text" />
+            </div>
         </div>
         <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-default" ng-click="SaveCategory()" />
+            <input class="btn btn-primary" type="submit" value="Save" ng-click="SaveCategory()" />
         </div>
     </div>
 </div>
