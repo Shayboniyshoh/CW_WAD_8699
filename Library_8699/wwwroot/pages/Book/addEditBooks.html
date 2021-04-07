@@ -26,8 +26,10 @@
             <div class="input-group-prepend">
                 <label class="input-group-text">Categories</label>
             </div>
-            <select class="custom-select" ng-model="book.categoryId">
-                <option ng-repeat="option in book.availableOptions" value="{{option.id}}">{{option.title}}</option>
+            <select class="custom-select" 
+                    ng-options="category.id as category.title for category in categories" 
+                    ng-model="book.categoryId" ng-change="GetBooks()">
+
             </select>
         </div>
         <div class="form-group">

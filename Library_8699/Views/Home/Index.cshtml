@@ -62,9 +62,15 @@
 
             $http.get('@Url.Action("GetCategories", "Categories")')
                 .then(function (response) {
-                    $scope.cate = response.data;
+                    $scope.categories = response.data;
                 });
 
+            $scope.DeleteBook = function (category) {
+                $http.delete("@Url.Action("GetBooks", "Books")/" + book.Id).then(function (response) {
+                    var index = $scope.books.indexOf(books);
+                    $scope.books.splice(index, 1);
+                });
+            };
             $scope.GetBooks = function () {
                 var url = '@Url.Action("GetBooks", "Books")';
                 if ($scope.selectedCategories) {
@@ -80,29 +86,35 @@
 
         }])
         .controller('AddBookController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-            $scope.books =
+            $scope.book =
             {
                 id: 0,
                 title: '',
-                issueYear: ''
+                issueYear: '',
+                isAvailable: false,
+                categoryId: $scope.categories
             };
 
             $scope.SaveBook = function ()
             {
-                $http.post('@Url.Action("PostBook", "Books")', $scope.books)
+                $http.post('@Url.Action("PostBook", "Books")', $scope.book)
                     .then(function (response) {
                         $location.path('/books');
                     })
             }
+            $http.get('@Url.Action("GetCategories", "Categories")')
+                .then(function (response) {
+                    $scope.categories = response.data;
+                });
         }])
         .controller('EditBookController', ['$scope', '$http', '$location', '$routeParams', function ($scope, $http, $location, $routeParams) {
             $scope.book =
             {
-                id: $routeParams.BookId,
+                id: 0,
                 title: '',
                 issueYear: '',
-                IsAvailable: $routeParams.IsAvailable,
-                CategoryId: $routeParams.categories
+                isAvailable: false,
+                categoryId: $scope.categories
             };
 
             $http.get('@Url.Action("GetBooks", "Books")/' + $routeParams.BookId)
@@ -117,6 +129,10 @@
                         $location.path('/books');
                     })
             }
+             $http.get('@Url.Action("GetCategories", "Categories")')
+                .then(function (response) {
+                    $scope.categories = response.data;
+                });
         }])//below categories controller logic
         .controller('CategoriesController', ['$scope', '$http', function ($scope, $http) {
             $scope.categories = [];
@@ -125,7 +141,7 @@
                     $scope.categories = response.data;
                 });
 
-            $scope.Delete = function (category) {
+            $scope.DeleteCategory = function (category) {
                 $http.delete("@Url.Action("GetCategories", "Categories")/" + category.id).then(function (response) {
                     var index = $scope.categories.indexOf(category);
                     $scope.categories.splice(index, 1);
