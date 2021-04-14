@@ -65,9 +65,9 @@
                     $scope.categories = response.data;
                 });
 
-            $scope.DeleteBook = function (category) {
-                $http.delete("@Url.Action("GetBooks", "Books")/" + book.Id).then(function (response) {
-                    var index = $scope.books.indexOf(books);
+            $scope.DeleteBook = function (book) {
+                $http.delete("@Url.Action("GetBooks", "Books")/" + book.id).then(function (response) {
+                    var index = $scope.books.indexOf(book);
                     $scope.books.splice(index, 1);
                 });
             };
