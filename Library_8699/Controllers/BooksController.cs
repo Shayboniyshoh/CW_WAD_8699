@@ -49,7 +49,6 @@ namespace Library_8699.Controllers
                 return BadRequest(ModelState);
             }
 
-
             try
             {
                 await _book.Update(book);
