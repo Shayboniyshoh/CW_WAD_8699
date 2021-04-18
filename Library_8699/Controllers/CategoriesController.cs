@@ -12,19 +12,16 @@ namespace Library_8699.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly IRepository<Category> _category;
-
         public CategoriesController(IRepository<Category> category)
         {
             _category = category;
         }
-
         // GET: api/Categories
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
         {
             return await _category.GetAll();
         }
-
         // GET: api/Categories/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Category>> GetCategory(int id)
@@ -35,10 +32,8 @@ namespace Library_8699.Controllers
             {
                 return NotFound();
             }
-
             return category;
         }
-
         // PUT: api/Categories/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -48,7 +43,6 @@ namespace Library_8699.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             try
             {
                 await _category.Update(category);
@@ -64,10 +58,8 @@ namespace Library_8699.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
-
         // POST: api/Categories
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -78,10 +70,8 @@ namespace Library_8699.Controllers
                 return BadRequest(ModelState);
             }
             await _category.Create(category);
-
             return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
-
         // DELETE: api/Categories/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteCategory(int id)
@@ -91,12 +81,9 @@ namespace Library_8699.Controllers
             {
                 return NotFound();
             }
-
             await _category.Delete(id);
-
             return NoContent();
         }
-
         private bool CategoryExists(int id)
         {
             return _category.Exists(id);

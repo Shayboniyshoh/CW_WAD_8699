@@ -15,7 +15,6 @@ namespace Library_8699_DAL.Repositories
             : base(context)
         {
         }
-
         public override bool Exists(int id)
         {
             return _context.Categories.Any(e => e.Id == id);

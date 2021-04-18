@@ -14,12 +14,10 @@ namespace Library_8699.Controllers
     public class BooksController : ControllerBase
     {
         private readonly IRepository<Book> _book;
-
         public BooksController(IRepository<Book> book)
         {
             _book = book;
         }
-
         // GET: api/Books
         [HttpGet]
         public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks(int? categoryId)
@@ -38,7 +36,6 @@ namespace Library_8699.Controllers
                 CategoryName = b.Category.Title
             }));
         }
-
         // GET: api/Books/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Book>> GetBook(int id)
@@ -52,7 +49,6 @@ namespace Library_8699.Controllers
 
             return book;
         }
-
         // PUT: api/Books/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -62,7 +58,6 @@ namespace Library_8699.Controllers
             {
                 return BadRequest(ModelState);
             }
-
             try
             {
                 await _book.Update(book);
@@ -78,10 +73,8 @@ namespace Library_8699.Controllers
                     throw;
                 }
             }
-
             return NoContent();
         }
-
         // POST: api/Books
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -95,7 +88,6 @@ namespace Library_8699.Controllers
 
             return CreatedAtAction("GetBook", new { id = book.Id }, book);
         }
-
         // DELETE: api/Books/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteBook(int id)
@@ -107,10 +99,8 @@ namespace Library_8699.Controllers
             }
 
             await _book.Delete(id);
-
             return NoContent();
         }
-
         private bool BookExists(int id)
         {
             return _book.Exists(id);

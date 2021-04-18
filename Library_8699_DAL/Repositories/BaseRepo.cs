@@ -26,10 +26,6 @@ namespace Library_8699_DAL.Repositories
         }
         public async Task Delete(int id)
         {
-            /*
-            var movie = await _context.Books.FindAsync(id);
-            _context.Books.Remove(movie);
-            await _context.SaveChangesAsync();*/
             var entity = await dbset.FindAsync(id);
             dbset.Remove(entity);
             await _context.SaveChangesAsync();
