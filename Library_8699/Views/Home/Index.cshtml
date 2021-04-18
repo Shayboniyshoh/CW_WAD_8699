@@ -14,39 +14,39 @@
         .config(function ($routeProvider) {
             $routeProvider
                 .when('/',
-                {
-                    templateUrl: 'pages/index.html',
-                    controller: 'IndexController'
-                })
+                    {
+                        templateUrl: 'pages/index.html',
+                        controller: 'IndexController'
+                    })
                 .when('/books',
-                {
-                    templateUrl: 'pages/Book/books.html',
-                    controller: 'BooksController'
-                }).when('/addBooks',
-                {
-                    templateUrl: 'pages/Book/addEditBooks.html',
-                    controller: 'AddBookController'
-                })
+                    {
+                        templateUrl: 'pages/Book/books.html',
+                        controller: 'BooksController'
+                    }).when('/addBooks',
+                        {
+                            templateUrl: 'pages/Book/addEditBooks.html',
+                            controller: 'AddBookController'
+                        })
                 .when('/editBook/:BookId',
                     {
                         templateUrl: 'pages/Book/addEditBooks.html',
                         controller: 'EditBookController'
-                })
+                    })
                 .when('/categories',
-                {
-                    templateUrl: 'pages/Category/categories.html',
-                    controller: 'CategoriesController'
-                })
+                    {
+                        templateUrl: 'pages/Category/categories.html',
+                        controller: 'CategoriesController'
+                    })
                 .when('/addCategories',
-                {
-                    templateUrl: 'pages/Category/addEditCategories.html',
-                    controller: 'AddCategoryController'
-                })
+                    {
+                        templateUrl: 'pages/Category/addEditCategories.html',
+                        controller: 'AddCategoryController'
+                    })
                 .when('/editCategory/:CategoryId',
                     {
                         templateUrl: 'pages/Category/addEditCategories.html',
                         controller: 'EditCategoryController'
-                })
+                    })
                 .otherwise({
                     redirectTo: '/'
                 });
@@ -95,13 +95,12 @@
                 categoryId: $scope.categories
             };
 
-            $scope.SaveBook = function ()
-            {
+            $scope.SaveBook = function () {
                 $http.post('@Url.Action("PostBook", "Books")', $scope.book)
                     .then(function (response) {
                         $location.path('/books');
                     })
-            }
+            };
             $http.get('@Url.Action("GetCategories", "Categories")')
                 .then(function (response) {
                     $scope.categories = response.data;
@@ -122,14 +121,13 @@
                     $scope.book = response.data;
                 });
 
-            $scope.SaveBook = function ()
-            {
+            $scope.SaveBook = function () {
                 $http.put('@Url.Action("GetBooks", "Books")/' + $routeParams.BookId, $scope.book)
                     .then(function (response) {
                         $location.path('/books');
                     })
             }
-             $http.get('@Url.Action("GetCategories", "Categories")')
+            $http.get('@Url.Action("GetCategories", "Categories")')
                 .then(function (response) {
                     $scope.categories = response.data;
                 });
@@ -145,19 +143,18 @@
                 $http.delete("@Url.Action("GetCategories", "Categories")/" + category.id).then(function (response) {
                     var index = $scope.categories.indexOf(category);
                     $scope.categories.splice(index, 1);
-                    });
-                }
+                });
+            }
         }])
         .controller('AddCategoryController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
-            $scope.categories =
+            $scope.category =
             {
                 id: 0,
                 title: '',
                 issueYear: ''
             };
 
-            $scope.SaveCategory = function()
-            {
+            $scope.SaveCategory = function () {
                 $http.post('@Url.Action("PostCategory", "Categories")', $scope.category)
                     .then(function (response) {
                         $location.path('/categories');
@@ -177,12 +174,11 @@
                     $scope.category = response.data;
                 });
 
-            $scope.SaveCategory = function ()
-            {
+            $scope.SaveCategory = function () {
                 $http.put('@Url.Action("GetCategories", "Categories")/' + $routeParams.CategoryId, $scope.category)
                     .then(function (response) {
                         $location.path('/categories');
                     })
-            }
+            };
         }]);
 </script>

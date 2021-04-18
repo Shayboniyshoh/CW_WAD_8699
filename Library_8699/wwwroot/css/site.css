@@ -91,3 +91,6 @@ body {
 .headInt_text {
     font-size: 1.6rem;
 }
+.shadow{
+    box-shadow: 1px 1px 0.5rem 1px rgba(0,0,0,0.3);
+}
