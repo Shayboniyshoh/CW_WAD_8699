@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Library_8699_DAL.DBO;
 using Library_8699_DAL.Repositories;
+using System.Linq;
+using Library_8699_DAL.DTO;
 
 namespace Library_8699.Controllers
 {
@@ -20,9 +22,21 @@ namespace Library_8699.Controllers
 
         // GET: api/Books
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Book>>> GetBooks()
+        public async Task<ActionResult<IEnumerable<BookDTO>>> GetBooks(int? categoryId)
         {
-            return await _book.GetAll();
+            var books = await _book.GetAll();
+            if (categoryId.HasValue)
+            {
+                books = books.Where(s => s.CategoryId == categoryId).ToList();
+            }
+            return Ok(books.Select(b => new BookDTO
+            {
+                Id = b.Id,
+                Title = b.Title,
+                IssueYear = b.IssueYear,
+                IsAvailable = b.IsAvailable,
+                CategoryName = b.Category.Title
+            }));
         }
 
         // GET: api/Books/5
