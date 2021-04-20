@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library_8699_DAL.Migrations
 {
     [DbContext(typeof(LibraryDataContext))]
-    [Migration("20210329173253_Library_8699")]
-    partial class Library_8699
+    [Migration("20210420175521_InitialCreate")]
+    partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -53,9 +53,6 @@ namespace Library_8699_DAL.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
 
                     b.Property<int>("IssueYear")
                         .HasColumnType("int");

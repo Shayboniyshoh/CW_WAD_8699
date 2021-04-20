@@ -2,7 +2,7 @@
 
 namespace Library_8699_DAL.Migrations
 {
-    public partial class Library_8699 : Migration
+    public partial class InitialCreate : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -13,8 +13,7 @@ namespace Library_8699_DAL.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IssueYear = table.Column<int>(type: "int", nullable: false),
-                    BookId = table.Column<int>(type: "int", nullable: false)
+                    IssueYear = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
