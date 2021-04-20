@@ -8,11 +8,9 @@ namespace Library_8699_DAL.Repositories
     public abstract class BaseRepo<T>: IRepository<T> where T : class
     {
         protected readonly LibraryDataContext _context;
-        internal DbSet<T> dbset;
         protected BaseRepo(LibraryDataContext context)
         {
             _context = context;
-            this.dbset = _context.Set<T>(); 
         }
         public async Task Create(T entity)
         {
@@ -26,12 +24,12 @@ namespace Library_8699_DAL.Repositories
         }
         public async Task Delete(int id)
         {
-            var entity = await dbset.FindAsync(id);
-            dbset.Remove(entity);
+            var entity = await _context.Set<T>().FindAsync(id);
+            _context.Set<T>().Remove(entity);
             await _context.SaveChangesAsync();
         }
         public abstract bool Exists(int id);
-        public abstract Task<List<T>> GetAll();
         public abstract Task<T> GetById(int id);
+        public abstract Task<List<T>> GetAll();
     }
 }

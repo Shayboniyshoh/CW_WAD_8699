@@ -1,10 +1,9 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library_8699_DAL.Repositories
 {
-    public interface IRepository<T> where T:class
+    public interface IRepository<T> where T: class
     {
         Task Create(T entity);
         Task Update(T entity);
