@@ -10,6 +10,6 @@ namespace Library_8699_DAL.DAL
         {
         }
         public virtual DbSet<Book> Books { get; set; }
-        public DbSet<Library_8699_DAL.DBO.Category> Categories { get; set; }
+        public virtual DbSet<Category> Categories { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace Library_8699_DAL.Repositories
         }
         public override async Task<List<Category>> GetAll()
         {
-           return await _context.Categories.Include(p => p.Books).ToListAsync();
+           return await _context.Categories.ToListAsync();
         }
         public override async Task<Category> GetById(int id)
         {
