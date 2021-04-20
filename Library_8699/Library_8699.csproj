@@ -26,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Library_8699_DAL\Library_8699_DAL.csproj" />
-    <ProjectReference Include="..\WAD_CW_8699\Library_8699_DAL.csproj" />
   </ItemGroup>
 
 </Project>
